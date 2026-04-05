@@ -2,9 +2,9 @@
 
 ## 📌 Overview
 
-This project is a backend system for managing financial records with **role-based access control**. It allows users to create, view, update, and analyze financial data such as income and expenses.
+This project is a backend system for managing financial records with **role-based access control (RBAC)**. It allows users to create, view, update, and analyze financial data such as income and expenses.
 
-The system is designed to demonstrate **API design, data modeling, authentication, authorization, and business logic implementation**.
+The system demonstrates backend concepts like **API design, authentication, authorization, data modeling, filtering, pagination, and aggregation**.
 
 ---
 
@@ -13,23 +13,23 @@ The system is designed to demonstrate **API design, data modeling, authenticatio
 ### 🔐 Authentication & Authorization
 
 * JWT-based authentication
-* Role-based access control (RBAC)
+* Role-based access control (RBAC) using middleware
 * Roles:
 
-  * **Admin** → Full access (CRUD + user management)
-  * **Analyst** → Read + analytics
-  * **Viewer** → Read-only
+  * **Admin** → Full access (create, update, delete records)
+  * **Analyst** → Read records + view analytics
+  * **Viewer** → Read-only access
 
 ---
 
 ### 💰 Financial Records Management
 
-* Create financial records
+* Create financial records (Admin only)
 * Get all records with:
 
-  * Filtering (type, category, date)
+  * Filtering (type, category, date range)
   * Pagination
-* Get single record
+* Get single record by ID
 * Update record (Admin only)
 * Delete record (Admin only)
 
@@ -38,9 +38,9 @@ The system is designed to demonstrate **API design, data modeling, authenticatio
 ### 📊 Dashboard APIs
 
 * Total income
-* Total expense
+* Total expenses
 * Net balance
-* Category-wise summary (MongoDB aggregation)
+* Category-wise summary (using MongoDB aggregation)
 
 ---
 
@@ -48,7 +48,7 @@ The system is designed to demonstrate **API design, data modeling, authenticatio
 
 * Input validation for required fields
 * Proper HTTP status codes
-* Error handling using try-catch
+* Error handling using try-catch blocks
 
 ---
 
@@ -57,7 +57,7 @@ The system is designed to demonstrate **API design, data modeling, authenticatio
 * **Backend:** Node.js, Express.js
 * **Database:** MongoDB (Mongoose)
 * **Authentication:** JSON Web Tokens (JWT)
-* **API Docs:** Swagger
+* **API Documentation:** Swagger (swagger-jsdoc, swagger-ui-express)
 
 ---
 
@@ -106,7 +106,7 @@ JWT_SECRET=your_secret_key
 node server.js
 ```
 
-Server will run on:
+Server runs on:
 
 ```
 http://localhost:5000
@@ -118,22 +118,22 @@ http://localhost:5000
 
 ### 🔐 Auth APIs
 
-| Method | Endpoint           | Description       |
-| ------ | ------------------ | ----------------- |
-| POST   | /api/auth/register | Register user     |
-| POST   | /api/auth/login    | Login & get token |
+| Method | Endpoint           | Description         |
+| ------ | ------------------ | ------------------- |
+| POST   | /api/auth/register | Register user       |
+| POST   | /api/auth/login    | Login and get token |
 
 ---
 
 ### 💰 Record APIs
 
-| Method | Endpoint         | Description           |
-| ------ | ---------------- | --------------------- |
-| POST   | /api/records     | Create record (Admin) |
-| GET    | /api/records     | Get all records       |
-| GET    | /api/records/:id | Get single record     |
-| PUT    | /api/records/:id | Update record (Admin) |
-| DELETE | /api/records/:id | Delete record (Admin) |
+| Method | Endpoint         | Description                           |
+| ------ | ---------------- | ------------------------------------- |
+| POST   | /api/records     | Create record (Admin)                 |
+| GET    | /api/records     | Get all records (filter + pagination) |
+| GET    | /api/records/:id | Get single record                     |
+| PUT    | /api/records/:id | Update record (Admin)                 |
+| DELETE | /api/records/:id | Delete record (Admin)                 |
 
 ---
 
@@ -147,6 +147,8 @@ http://localhost:5000
 ---
 
 ## 🔍 Query Parameters (Filtering & Pagination)
+
+Example:
 
 ```
 /api/records?type=income&category=salary&page=1&limit=5
@@ -163,7 +165,42 @@ http://localhost:5000
 
 ---
 
-## 🔐 Authorization Header
+## 🔐 Authorization
+
+This project uses JWT-based authentication.
+
+After login, a token is returned which must be included in request headers for protected routes.
+
+### 📌 Header Format
+
+```
+Authorization: <your_token>
+```
+
+⚠️ Note:
+The token is passed directly without the `Bearer` prefix.
+
+---
+
+## 📚 API Documentation (Swagger)
+
+Interactive API documentation is available using Swagger.
+
+### 🚀 Access Swagger UI
+
+```
+http://localhost:5000/api-docs
+```
+
+### 📌 Features
+
+* View all API endpoints
+* Understand request/response formats
+* Test APIs directly from browser
+
+### 🔐 Authentication in Swagger
+
+For protected routes, include token in headers:
 
 ```
 Authorization: <your_token>
@@ -173,39 +210,29 @@ Authorization: <your_token>
 
 ## 🧪 API Testing
 
-APIs were tested using **Postman**.
+APIs were tested using Postman.
 
 Steps:
 
 1. Register user
 2. Login to get JWT token
-3. Add token in headers
+3. Add token in Authorization header
 4. Test all endpoints
-
----
-
-## 📚 API Documentation
-
-Swagger UI available at:
-
-```
-http://localhost:5000/api-docs
-```
 
 ---
 
 ## 🧠 Design Decisions
 
-* Used **MVC architecture** for separation of concerns
-* Implemented **middleware-based RBAC** for clean access control
+* Used **MVC architecture** for clean separation of concerns
+* Implemented **role-based middleware** for access control
 * Used **MongoDB aggregation** for analytics APIs
-* Designed flexible query-based filtering
+* Designed flexible filtering using query parameters
 
 ---
 
 ## 🚀 Future Improvements
 
-* Monthly/weekly analytics
+* Monthly / weekly analytics
 * Search functionality
 * User management APIs
 * Deployment (Render / AWS)
@@ -214,6 +241,6 @@ http://localhost:5000/api-docs
 
 ## 👨‍💻 Author
 
-Shrajjal  Prakash
+Shrajjal Prakash
 
 ---
